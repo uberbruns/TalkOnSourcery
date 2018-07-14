@@ -1,0 +1,5 @@
+_ = [
+{% for type in types.all %}
+    "{{ type.name }}",
+{% endfor %}
+]
