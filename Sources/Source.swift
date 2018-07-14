@@ -21,7 +21,6 @@ struct Address {
 }
 
 struct Device {
-    // sourcery: case_properties
     enum Kind {
         case light(on: Bool, brightness: Double)
         case powerSwitch(on: Bool)
