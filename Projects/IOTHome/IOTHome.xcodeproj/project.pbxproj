@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9B80894B20FA58D100596BA5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80894A20FA58D100596BA5 /* main.swift */; };
-		9B80895220FA58E400596BA5 /* CaseProperties.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80895120FA58E400596BA5 /* CaseProperties.generated.swift */; };
-		9B80895420FA58F300596BA5 /* IOTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80895320FA58F300596BA5 /* IOTModel.swift */; };
+		9B80895220FA58E400596BA5 /* CodeGen.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80895120FA58E400596BA5 /* CodeGen.generated.swift */; };
+		9B80895420FA58F300596BA5 /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80895320FA58F300596BA5 /* Source.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,8 +27,8 @@
 /* Begin PBXFileReference section */
 		9B80894720FA58D100596BA5 /* IOTHome */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = IOTHome; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B80894A20FA58D100596BA5 /* main.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; tabWidth = 4; };
-		9B80895120FA58E400596BA5 /* CaseProperties.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CaseProperties.generated.swift; path = ../../../Output/CaseProperties.generated.swift; sourceTree = "<group>"; };
-		9B80895320FA58F300596BA5 /* IOTModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; name = IOTModel.swift; path = ../../../Sources/IOTModel.swift; sourceTree = "<group>"; tabWidth = 4; };
+		9B80895120FA58E400596BA5 /* CodeGen.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CodeGen.generated.swift; path = ../../../Output/CodeGen.generated.swift; sourceTree = "<group>"; };
+		9B80895320FA58F300596BA5 /* Source.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; name = Source.swift; path = ../../../Sources/Source.swift; sourceTree = "<group>"; tabWidth = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +63,8 @@
 		9B80894920FA58D100596BA5 /* IOTHome */ = {
 			isa = PBXGroup;
 			children = (
-				9B80895120FA58E400596BA5 /* CaseProperties.generated.swift */,
-				9B80895320FA58F300596BA5 /* IOTModel.swift */,
+				9B80895120FA58E400596BA5 /* CodeGen.generated.swift */,
+				9B80895320FA58F300596BA5 /* Source.swift */,
 				9B80894A20FA58D100596BA5 /* main.swift */,
 			);
 			path = IOTHome;
@@ -129,8 +129,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B80894B20FA58D100596BA5 /* main.swift in Sources */,
-				9B80895420FA58F300596BA5 /* IOTModel.swift in Sources */,
-				9B80895220FA58E400596BA5 /* CaseProperties.generated.swift in Sources */,
+				9B80895420FA58F300596BA5 /* Source.swift in Sources */,
+				9B80895220FA58E400596BA5 /* CodeGen.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

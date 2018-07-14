@@ -11,11 +11,6 @@ import Foundation
 let device = Device(id: 123, name: "Light", kind: .light(on: true, brightness: 0.5))
 
 
-if case let .light(brightness: brightness) = device.kind {
-    print(brightness)
-}
-
-
-if let brightness = device.kind.light?.brightness {
-    print(brightness)
+if case .light = device.kind {
+    print("It's a light!")
 }
