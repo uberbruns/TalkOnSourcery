@@ -1,0 +1,35 @@
+{% for enum in types.enums where enum|annotated:"case_properties" %}
+extension {{ enum.name }} {
+    {% for case in enum.cases %}
+
+    // MARK: {{ case.name|upperFirstLetter }}
+    {% if case.hasAssociatedValue %}
+
+    struct {{ case.name|upperFirstLetter }} {
+        {% for value in case.associatedValues %}
+        let {{ value.localName }}: {{ value.typeName }}
+        {% endfor %}
+    }
+
+    var {{ case.name }}: {{ case.name|upperFirstLetter }}? {
+        switch self {
+        case .{{ case.name }}({% for value in case.associatedValues %}let {{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %}):
+            return {{ case.name|upperFirstLetter }}({% for value in case.associatedValues %}{{ value.localName }}: {{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %})
+        default:
+            return nil
+        }
+    }
+    {% endif %}
+
+    var is{{ case.name|upperFirstLetter }}: Bool {
+        if case .{{ case.name }} = self {
+            return true
+        } else {
+            return false
+        }
+    }
+{% endfor %}
+}
+
+
+{% endfor %}

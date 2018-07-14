@@ -6,11 +6,12 @@ struct User: Person {
     let homes: [Home]
 }
 
+// sourcery: case_properties
 enum Device {
-    case light
+    case light(on: Bool)
     case powerSwitch
-    case commander
-    case captain
+    case blinds
+    case heating
 }
 
 struct Home {
