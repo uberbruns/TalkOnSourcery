@@ -1,5 +1,5 @@
 {% for subject in types.all where subject|annotated:"test" %}
-// sourcery:file:Tests/{{ subject.name }}.swift
+// sourcery:file:Tests/{{ subject.name }}Tests.swift
 class {{ subject.name }}Tests: XCTestCase {
 
     var tested{{ subject.name }}: {{ subject.name }}!
