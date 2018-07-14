@@ -1,37 +1,73 @@
-import Foundation
-
-{% for enum in types.enums where enum|annotated:"case_properties" %}
-extension {{ enum.name }} {
-    {% for case in enum.cases %}
-
-    // MARK: {{ case.name|upperFirstLetter }}
-    {% if case.hasAssociatedValue %}
-
-    struct {{ case.name|upperFirstLetter }} {
-        {% for value in case.associatedValues %}
-        let {{ value.localName }}: {{ value.typeName }}
-        {% endfor %}
-    }
-
-    var {{ case.name }}: {{ case.name|upperFirstLetter }}? {
-        switch self {
-        case .{{ case.name }}({% for value in case.associatedValues %}let {{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %}):
-            return {{ case.name|upperFirstLetter }}({% for value in case.associatedValues %}{{ value.localName }}: {{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %})
-        default:
-            return nil
-        }
-    }
-    {% endif %}
-
-    var is{{ case.name|upperFirstLetter }}: Bool {
-        if case .{{ case.name }} = self {
-            return true
-        } else {
-            return false
-        }
-    }
+{% for enum in types.based.SceneModel|enum %}
+protocol {{ enum.name|replace:"SceneModel","InteractorProtocol" }} {
+{% for useCase in enum.containedTypes|enum %}
+{% for type in useCase.containedTypes where type.localName|hasSuffix:"Request" %}
+    func receive{{ useCase.localName }}Request(_ request: {{ type.name }})
+{% endfor %}
 {% endfor %}
 }
 
+// sourcery:file:Snippets/Scenes/{{ enum.name|replace:"SceneModel","" }}/{{ enum.name|replace:"SceneModel","Interactor" }}.swift
+class {{ enum.name|replace:"SceneModel","Interactor" }} {
+}
 
+
+extension {{ enum.name|replace:"SceneModel","Interactor" }}: {{ enum.name|replace:"SceneModel","InteractorProtocol" }} {
+{% for useCase in enum.containedTypes|enum %}
+{% for type in useCase.containedTypes where type.localName|hasSuffix:"Request" %}
+
+    func receive{{ useCase.localName }}Request(_ request: {{ type.name }}) {
+    }
+{% endfor %}
+{% endfor %}
+}
+// sourcery:end
+
+protocol {{ enum.name|replace:"SceneModel","PresenterProtocol" }} {
+{% for useCase in enum.containedTypes|enum %}
+{% for type in useCase.containedTypes where type.localName|hasSuffix:"Response" %}
+    func present{{ useCase.localName }}Response(_ response: {{ type.name }})
+{% endfor %}
+{% endfor %}
+}
+
+// sourcery:file:Snippets/Scenes/{{ enum.name|replace:"SceneModel","" }}/{{ enum.name|replace:"SceneModel","Presenter" }}.swift
+class {{ enum.name|replace:"SceneModel","Presenter" }} {
+}
+
+
+extension {{ enum.name|replace:"SceneModel","Presenter" }}: {{ enum.name|replace:"SceneModel","PresenterProtocol" }} {
+{% for useCase in enum.containedTypes|enum %}
+{% for type in useCase.containedTypes where type.localName|hasSuffix:"Response" %}
+
+    func present{{ useCase.localName }}Response(_ response: {{ type.name }}) {
+    }
+{% endfor %}
+{% endfor %}
+}
+// sourcery:end
+
+protocol {{ enum.name|replace:"SceneModel","InterfaceProtocol" }} {
+{% for useCase in enum.containedTypes|enum %}
+{% for type in useCase.containedTypes where type.localName|hasSuffix:"ViewModel" %}
+    func display{{ useCase.localName }}ViewModel(_ viewModel: {{ type.name }})
+{% endfor %}
+{% endfor %}
+}
+
+// sourcery:file:Snippets/Scenes/{{ enum.name|replace:"SceneModel","" }}/{{ enum.name|replace:"SceneModel","ViewController" }}.swift
+class {{ enum.name|replace:"SceneModel","ViewController" }}: UIViewController {
+}
+
+
+extension {{ enum.name|replace:"SceneModel","InterfaceProtocol" }} {
+{% for useCase in enum.containedTypes|enum %}
+{% for type in useCase.containedTypes where type.localName|hasSuffix:"ViewModel" %}
+
+    func display{{ useCase.localName }}ViewModel(_ viewModel: {{ type.name }}) {
+    }
+{% endfor %}
+{% endfor %}
+}
+// sourcery:end
 {% endfor %}
