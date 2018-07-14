@@ -9,8 +9,8 @@ struct User: Person {
 enum Device {
     case light
     case powerSwitch
-    case commander
-    case captain
+    case blinds
+    case heating
 }
 
 struct Home {
