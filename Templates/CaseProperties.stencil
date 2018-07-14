@@ -1,3 +1,5 @@
+import Foundation
+
 {% for enum in types.enums where enum|annotated:"case_properties" %}
 extension {{ enum.name }} {
     {% for case in enum.cases %}
