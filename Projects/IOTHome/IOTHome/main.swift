@@ -16,7 +16,7 @@ if case .light = device.kind {
 }
 
 
-if case .light = device.kind {
+if device.kind.isLight {
     print("It's a light!")
 }
 
