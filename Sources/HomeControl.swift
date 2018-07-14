@@ -1,12 +1,4 @@
-//sourcery: mock
-protocol HomeControlProtocol {
-    func add(device: Device)
-    func remove(device: Device)
-    func absenceMode(enabled: Bool)
-}
-
-
-class HomeControl: HomeControlProtocol {
+class HomeControl {
 
     private(set) var home: Home
     
