@@ -1,8 +1,9 @@
 protocol Person {
-    let name: String
+    var name: String { get }
 }
 
 struct User: Person {
+    let name: String
     let homes: [Home]
 }
 
