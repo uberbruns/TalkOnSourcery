@@ -1,5 +1,5 @@
 {% for protocol in types.protocols where protocol|annotated:"mock" %}
-{{ protocol.kind }} {{ protocol.name|replace:"Protocol","Mock" }}: {{ protocol.name }} {
+protocol {{ protocol.name|replace:"Protocol","Mock" }}: {{ protocol.name }} {
 {% for method in protocol.methods %}
 
     var invoked{{ method.shortName|upperFirstLetter }} = false
