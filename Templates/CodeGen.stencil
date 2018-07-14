@@ -1,4 +1,5 @@
-// Tests 
+import XCTest
+@testable import AppProject
 
 {% for subject in types.all where subject|annotated:"test" %}
 // sourcery:file:Tests/{{ subject.name }}Tests.swift
