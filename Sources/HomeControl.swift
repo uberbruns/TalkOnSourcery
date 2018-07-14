@@ -5,7 +5,7 @@ protocol HomeControlProtocol {
     func absenceMode(enabled: Bool)
 }
 
-
+//sourcery: test
 class HomeControl: HomeControlProtocol {
 
     private(set) var home: Home
@@ -18,7 +18,7 @@ class HomeControl: HomeControlProtocol {
         // Add device to home
     }
 
-    func remove(device: Device) {
+    func delete(device: Device) {
         // Remove device from home
     }
 

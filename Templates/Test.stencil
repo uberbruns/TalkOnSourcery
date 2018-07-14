@@ -1,0 +1,26 @@
+{% for subject in types.all where subject|annotated:"test" %}
+// sourcery:file:Tests/{{ subject.name }}.swift
+class {{ subject.name }}Tests: XCTestCase {
+
+    var tested{{ subject.name }}: {{ subject.name }}!
+
+    override func setUp() {
+        super.setUp()
+    }
+
+    // MARK: Tests
+{% for method in subject.methods %}
+{% ifnot method.isInitializer %}
+
+    func test{{ method.shortName|upperFirstLetter }}() {
+        // Given
+
+        // When
+
+        // Then
+    }
+{% endif %}
+{% endfor %}
+}
+// sourcery:end
+{% endfor %}
