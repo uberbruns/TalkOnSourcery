@@ -1,3 +1,5 @@
+// Tests 
+
 {% for subject in types.all where subject|annotated:"test" %}
 class {{ subject.name }}Tests: XCTestCase {
 
