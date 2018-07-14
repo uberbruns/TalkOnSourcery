@@ -1,6 +1,12 @@
-protocol AutoMock { }
+//sourcery: mock
+protocol HomeControlProtocol {
+    func add(device: Device)
+    func remove(device: Device)
+    func absenceMode(enabled: Bool)
+}
 
-class HomeControl: AutoMock {
+
+class HomeControl: HomeControlProtocol {
 
     private(set) var home: Home
     

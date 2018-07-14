@@ -1,12 +1,12 @@
-{% for subject in types.implementing.AutoMock %}
-{{ subject.kind }} {{ subject.name }}Mock: {{ subject.name }}Protocol {
-{% for method in subject.methods %}
+{% for protocol in types.protocols where protocol|annotated:"mock" %}
+{{ protocol.kind }} {{ protocol.name|replace:"Protocol","Mock" }}: {{ protocol.name }} {
+{% for method in protocol.methods %}
 
     var invoked{{ method.shortName|upperFirstLetter }} = false
     var invoked{{ method.shortName|upperFirstLetter }}Count = 0
     var invoked{{ method.shortName|upperFirstLetter }}Parameter: {{ method.parameters.first.typeName }}?
 
-    {% ifnot method.isInitializer %}func {% endif %}{{ method.name }} {
+    func {{ method.name }} {
         invoked{{ method.shortName|upperFirstLetter }} = true
         invoked{{ method.shortName|upperFirstLetter }}Count += 1
         invoked{{ method.shortName|upperFirstLetter }}Parameter = {{ method.parameters.first.name }}
