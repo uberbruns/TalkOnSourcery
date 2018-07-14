@@ -1,5 +1,5 @@
-_ = [
+print("""
 {% for type in types.all %}
-    "{{ type.name }}",
+- {{ type.name }}
 {% endfor %}
-]
+""")
