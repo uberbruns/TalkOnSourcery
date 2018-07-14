@@ -24,8 +24,3 @@ if device.kind.isLight {
 if case .light(let brightness) = device.kind {
     print(brightness)
 }
-
-
-if let brightness = device.kind.light?.brightness {
-    print(brightness)
-}
