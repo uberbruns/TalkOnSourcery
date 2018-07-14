@@ -14,3 +14,8 @@ let device = Device(id: 123, name: "Light", kind: .light(on: true, brightness: 0
 if case .light = device.kind {
     print("It's a light!")
 }
+
+
+if device.kind.isLight {
+    print("It's a light!")
+}
