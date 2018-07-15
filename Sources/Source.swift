@@ -7,7 +7,7 @@ struct GlobalEnvironment
     , TrackingServiceEnvironmentProtocol
     // sourcery:end
 {
-    var database: DatabaseProtocol = Database()
+    var database: DatabaseProtocol = Database(path: "/foo.db")
     var locationManager: LocationManagerProtocol = LocationManager()
 }
 
