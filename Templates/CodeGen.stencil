@@ -1,41 +1,12 @@
 import Foundation
 
-protocol AnyEnvironment { }
-
 struct EnvironmentError: Error { }
 
 {% for class in types.classes where class|annotated:"build_environment" %}
-// sourcery:inline:{{ class.name }}.Environment.Properties
-    typealias EnvironmentProtocol = {{ class.name }}EnvironmentProtocol
-
-    private let env: EnvironmentProtocol
-{% for property in class.containedType.Environment.variables %}
-    private let {{ property.name }}: {{ property.typeName }}
-{% endfor %}
-// sourcery:end
-
-// sourcery:inline:{{ class.name }}.Environment.ConvenienceInit
-    convenience init(env: AnyEnvironment{% for parameter in class.initializers.first.parameters where parameter.name != "env" %}, {% if parameter.argumentLabel == nil %}_ {% elif parameter.name != parameter.argumentLabel %}{{ parameter.argumentLabel }} {% endif %}{{ parameter.name }}: {{ parameter.typeName }}{% endfor %}) throws {
-        if let env = env as? EnvironmentProtocol {
-            self.init(env: env{% for parameter in class.initializers.first.parameters where parameter.name != "env" %}, {% if parameter.argumentLabel %}{{ parameter.argumentLabel }}: {% endif %}{{ parameter.name }}{% endfor %})
-        } else {
-            throw EnvironmentError()
-        }
-    }
-// sourcery:end
-
 // sourcery:inline:{{ class.name }}.Environment.Protocol
 protocol {{ class.name }}EnvironmentProtocol {
 {% for property in class.containedType.Environment.variables %}
     var {{ property.name }}: {{ property.typeName }} { get }
-{% endfor %}
-}
-// sourcery:end
-
-// sourcery:inline:{{ class.name }}.Environment.ProtocolImplementation
-struct {{ class.name }}Environment: {{ class.name }}EnvironmentProtocol {
-{% for property in class.containedType.Environment.variables %}
-    let {{ property.name }}: {{ property.typeName }}
 {% endfor %}
 }
 // sourcery:end
