@@ -9,7 +9,11 @@ protocol DatabaseProtocol {
 }
 
 class Database: DatabaseProtocol {
-    var path = "/db"
+    var path: String
+
+    init(path: String) {
+        self.path = path
+    }
 }
 
 
