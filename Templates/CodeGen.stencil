@@ -30,3 +30,4 @@ protocol {{ class.name }}EnvironmentProtocol {
     {{ class.name }}EnvironmentProtocol{% if not forloop.last %},{% else %}{{ " {" }}{% endif %}
 {% endfor %}
 // sourcery:end
+{% endfor %}
