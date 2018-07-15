@@ -5,7 +5,7 @@ import Foundation
     typealias EnvironmentProtocol = {{ class.name }}EnvironmentProtocol
     private let environment: EnvironmentProtocol
 {% for property in class.containedType.Environment.variables %}
-    private var {{ property.name }}: {{ property.typeName }} { environment.{{ property.name }} }
+    private var {{ property.name }}: {{ property.typeName }} { return environment.{{ property.name }} }
 {% endfor %}
 // sourcery:end
 
