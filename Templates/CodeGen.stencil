@@ -49,7 +49,6 @@ struct {{ class.name }}Environment: {{ class.name }}EnvironmentProtocol {
 {% endfor %}
 
 // sourcery:inline:Global.Environment
-    AnyEnvironment,
 {% for class in types.classes where class|annotated:"build_environment" %}
     {{ class.name }}EnvironmentProtocol{% if not forloop.last %},{% else %}{{ " {" }}{% endif %}
 {% endfor %}
