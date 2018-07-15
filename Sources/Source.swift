@@ -4,6 +4,8 @@ import Foundation
 
 struct GlobalEnvironment:
     // sourcery:inline:Global.Environment
+    SettingsServiceEnvironmentProtocol,
+    TrackingServiceEnvironmentProtocol {
     // sourcery:end
     var database: DatabaseProtocol = Database()
     var locationManager: LocationManagerProtocol = LocationManager()
@@ -20,18 +22,23 @@ class TrackingService {
     }
 
     // sourcery:inline:TrackingService.Environment.Properties
+    typealias EnvironmentProtocol = TrackingServiceEnvironmentProtocol
+    private let environment: EnvironmentProtocol
+    private var includesSettingsService: SettingsServiceEnvironmentProtocol { environment.includesSettingsService }
+    private var locationManager: LocationManagerProtocol { environment.locationManager }
     // sourcery:end
 
-    init(env: EnvironmentProtocol, withLimit limit: Int) {
-        // sourcery:inline:TrackingService.Environment.Init
-        // sourcery:end
-
-        let settingService = SettingsService(env: env)
+    init(environment: EnvironmentProtocol) {
+        self.environment = environment
+        let settingService = SettingsService(environment: environment)
         settingService.save()
     }
 }
 
 // sourcery:inline:TrackingService.Environment.Protocol
+protocol TrackingServiceEnvironmentProtocol: SettingsServiceEnvironmentProtocol {
+    var locationManager: LocationManagerProtocol { get }
+}
 // sourcery:end
 
 
@@ -43,11 +50,13 @@ class SettingsService {
     }
 
     // sourcery:inline:SettingsService.Environment.Properties
+    typealias EnvironmentProtocol = SettingsServiceEnvironmentProtocol
+    private let environment: EnvironmentProtocol
+    private var database: DatabaseProtocol { environment.database }
     // sourcery:end
 
-    init(env: SettingsServiceEnvironmentProtocol) {
-        // sourcery:inline:SettingsService.Environment.Init
-        // sourcery:end
+    init(environment: EnvironmentProtocol) {
+        self.environment = environment
     }
 
     func save() {
@@ -55,6 +64,8 @@ class SettingsService {
     }
 }
 
-
 // sourcery:inline:SettingsService.Environment.Protocol
+protocol SettingsServiceEnvironmentProtocol {
+    var database: DatabaseProtocol { get }
+}
 // sourcery:end
