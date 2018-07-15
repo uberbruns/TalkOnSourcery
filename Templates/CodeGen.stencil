@@ -1,7 +1,5 @@
 import Foundation
 
-struct EnvironmentError: Error { }
-
 {% for class in types.classes where class|annotated:"build_environment" %}
 // sourcery:inline:{{ class.name }}.Environment.Protocol
 protocol {{ class.name }}EnvironmentProtocol {
