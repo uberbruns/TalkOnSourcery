@@ -8,9 +8,6 @@ class TrackingService {
     }
 
     // sourcery:inline:TrackingService.Environment.Properties
-    typealias EnvironmentProtocol = TrackingServiceEnvironmentProtocol
-    private let environment: EnvironmentProtocol
-    private var locationManager: LocationManagerProtocol { environment.locationManager }
     // sourcery:end
 
     init(environment: EnvironmentProtocol) {
