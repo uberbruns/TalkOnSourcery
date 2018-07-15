@@ -9,10 +9,6 @@ class TrackingService {
 
     // sourcery:inline:TrackingService.Environment.Properties
     // sourcery:end
-
-    init(environment: EnvironmentProtocol) {
-        self.environment = environment
-    }
 }
 
 // sourcery:inline:TrackingService.Environment.Protocol
