@@ -1,9 +1,0 @@
-{% for enum in types.based.SceneModel|enum %}
-protocol {{ enum.name|replace:"SceneModel","InteractorProtocol" }}: AnyObject {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"Request" %}
-    func receive{{ useCase.localName }}Request(_ request: {{ type.name }})
-{% endfor %}
-{% endfor %}
-}
-{% endfor %}
