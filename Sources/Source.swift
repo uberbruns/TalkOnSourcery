@@ -1,6 +1,5 @@
 import Foundation
 
-// GLOBALE ENVIRONMENT
 
 struct GlobalEnvironment
     // sourcery:inline:Global.Environment
