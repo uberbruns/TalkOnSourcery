@@ -1,5 +1,6 @@
 import Foundation
 
+
 struct GlobalEnvironment
     // sourcery:inline:Global.Environment
     : TrackingServiceEnvironmentProtocol
