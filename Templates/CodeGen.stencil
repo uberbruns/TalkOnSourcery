@@ -3,10 +3,9 @@ import Foundation
 {% for class in types.classes where class|annotated:"build_environment" %}
 // sourcery:inline:{{ class.name }}.Environment.Properties
     typealias EnvironmentProtocol = {{ class.name }}EnvironmentProtocol
-
-    private let env: EnvironmentProtocol
+    private let environment: EnvironmentProtocol
 {% for property in class.containedType.Environment.variables %}
-    private let {{ property.name }}: {{ property.typeName }}
+    private var {{ property.name }}: {{ property.typeName }} { environment.{{ property.name }} }
 {% endfor %}
 // sourcery:end
 
