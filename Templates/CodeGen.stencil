@@ -24,13 +24,6 @@ struct EnvironmentError: Error { }
     }
 // sourcery:end
 
-// sourcery:inline:{{ class.name }}.Environment.Init
-        self.env = env
-{% for property in class.containedType.Environment.variables %}
-        self.{{ property.name }} = env.{{ property.name }}
-{% endfor %}
-// sourcery:end
-
 // sourcery:inline:{{ class.name }}.Environment.Protocol
 protocol {{ class.name }}EnvironmentProtocol {
 {% for property in class.containedType.Environment.variables %}
