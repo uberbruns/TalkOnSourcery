@@ -2,11 +2,12 @@ import Foundation
 
 // GLOBALE ENVIRONMENT
 
-struct GlobalEnvironment:
+struct GlobalEnvironment
     // sourcery:inline:Global.Environment
-    SettingsServiceEnvironmentProtocol,
-    TrackingServiceEnvironmentProtocol {
+    : SettingsServiceEnvironmentProtocol
+    , TrackingServiceEnvironmentProtocol
     // sourcery:end
+{
     var database: DatabaseProtocol = Database()
     var locationManager: LocationManagerProtocol = LocationManager()
 }
