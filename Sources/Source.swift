@@ -10,6 +10,7 @@ enum EditProfileSceneModel: SceneModel {
         struct ViewModel {
             let image: UIImage
             let userName: String
+            let fullName: String
         }
     }
 
@@ -28,6 +29,20 @@ enum EditProfileSceneModel: SceneModel {
     enum UserNameChange {
         struct Request {
             let newUserName: String
+        }
+        struct Response {
+            let containsInvalidCharacters: Bool
+            let isTooShort: Bool
+            let isAlreadyTaken: Bool
+        }
+        struct ViewModel {
+            let message: String?
+        }
+    }
+
+    enum UserFullNameChange {
+        struct Request {
+            let newFullName: String
         }
         struct Response {
             let containsInvalidCharacters: Bool
