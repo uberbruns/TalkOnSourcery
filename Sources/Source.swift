@@ -4,6 +4,7 @@ import Foundation
 
 struct GlobalEnvironment:
     // sourcery:inline:Global.Environment
+    AnyEnvironment,
     SettingsServiceEnvironmentProtocol,
     TrackingServiceEnvironmentProtocol {
     // sourcery:end
@@ -17,6 +18,7 @@ struct GlobalEnvironment:
 class TrackingService {
 
     private struct Environment {
+        let includesSettingsService: SettingsServiceEnvironmentProtocol
         let locationManager: LocationManagerProtocol
     }
 
@@ -32,11 +34,14 @@ class TrackingService {
         self.env = env
         self.locationManager = env.locationManager
         // sourcery:end
+
+        let settingService = SettingsService(env: env)
+        settingService.save()
     }
 }
 
 // sourcery:inline:TrackingService.Environment.Protocol
-protocol TrackingServiceEnvironmentProtocol {
+protocol TrackingServiceEnvironmentProtocol: SettingsServiceEnvironmentProtocol {
     var locationManager: LocationManagerProtocol { get }
 }
 // sourcery:end
