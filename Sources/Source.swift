@@ -12,7 +12,6 @@ struct GlobalEnvironment:
 }
 
 
-
 // sourcery:build_environment
 class TrackingService {
 
@@ -34,6 +33,7 @@ class TrackingService {
         settingService.save()
     }
 }
+
 
 // sourcery:inline:TrackingService.Environment.Protocol
 protocol TrackingServiceEnvironmentProtocol: SettingsServiceEnvironmentProtocol {
