@@ -23,8 +23,7 @@ class TrackingService {
     // sourcery:inline:TrackingService.Environment.Properties
     typealias EnvironmentProtocol = TrackingServiceEnvironmentProtocol
     private let environment: EnvironmentProtocol
-    private var includesSettingsService: SettingsServiceEnvironmentProtocol { environment.includesSettingsService }
-    private var locationManager: LocationManagerProtocol { environment.locationManager }
+    private var locationManager: LocationManagerProtocol { return environment.locationManager }
     // sourcery:end
 
     init(environment: EnvironmentProtocol) {
@@ -52,7 +51,7 @@ class SettingsService {
     // sourcery:inline:SettingsService.Environment.Properties
     typealias EnvironmentProtocol = SettingsServiceEnvironmentProtocol
     private let environment: EnvironmentProtocol
-    private var database: DatabaseProtocol { environment.database }
+    private var database: DatabaseProtocol { return environment.database }
     // sourcery:end
 
     init(environment: EnvironmentProtocol) {

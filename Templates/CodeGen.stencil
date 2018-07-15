@@ -4,8 +4,8 @@ import Foundation
 // sourcery:inline:{{ class.name }}.Environment.Properties
     typealias EnvironmentProtocol = {{ class.name }}EnvironmentProtocol
     private let environment: EnvironmentProtocol
-{% for property in class.containedType.Environment.variables %}
-    private var {{ property.name }}: {{ property.typeName }} { environment.{{ property.name }} }
+{% for property in class.containedType.Environment.variables where property.name|!hasPrefix:"includes" %}
+    private var {{ property.name }}: {{ property.typeName }} { return environment.{{ property.name }} }
 {% endfor %}
 // sourcery:end
 
