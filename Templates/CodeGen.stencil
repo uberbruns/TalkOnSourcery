@@ -1,93 +1,56 @@
 import Foundation
 
-{% for enum in types.based.SceneModel|enum %}
-protocol {{ enum.name|replace:"SceneModel","InteractorProtocol" }}: AnyObject {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"Request" %}
-    func receive{{ useCase.localName }}Request(_ request: {{ type.name }})
+protocol AnyEnvironment { }
+
+struct EnvironmentError: Error { }
+
+{% for class in types.classes where class|annotated:"build_environment" %}
+// sourcery:inline:{{ class.name }}.Environment.Properties
+    typealias EnvironmentProtocol = {{ class.name }}EnvironmentProtocol
+
+    private let env: EnvironmentProtocol
+{% for property in class.containedType.Environment.variables where property.name|!hasPrefix:"includes" %}
+    private let {{ property.name }}: {{ property.typeName }}
 {% endfor %}
-{% endfor %}
-}
+// sourcery:end
 
-// sourcery:file:Snippets/Scenes/{{ enum.name|replace:"SceneModel","" }}/{{ enum.name|replace:"SceneModel","Interactor" }}.swift
-class {{ enum.name|replace:"SceneModel","Interactor" }} {
-
-    private let presenter: {{ enum.name|replace:"SceneModel","PresenterProtocol" }}
-
-    init(presenter: {{ enum.name|replace:"SceneModel","PresenterProtocol" }}) {
-        self.presenter = presenter
+// sourcery:inline:{{ class.name }}.Environment.ConvenienceInit
+    convenience init(env: AnyEnvironment{% for parameter in class.initializers.first.parameters where parameter.name != "env" %}, {% if parameter.argumentLabel == nil %}_ {% elif parameter.name != parameter.argumentLabel %}{{ parameter.argumentLabel }} {% endif %}{{ parameter.name }}: {{ parameter.typeName }}{% endfor %}) throws {
+        if let env = env as? EnvironmentProtocol {
+            self.init(env: env{% for parameter in class.initializers.first.parameters where parameter.name != "env" %}, {% if parameter.argumentLabel %}{{ parameter.argumentLabel }}: {% endif %}{{ parameter.name }}{% endfor %})
+        } else {
+            throw EnvironmentError()
+        }
     }
-}
+// sourcery:end
 
-
-extension {{ enum.name|replace:"SceneModel","Interactor" }}: {{ enum.name|replace:"SceneModel","InteractorProtocol" }} {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"Request" %}
-
-    func receive{{ useCase.localName }}Request(_ request: {{ type.name }}) {
-    }
+// sourcery:inline:{{ class.name }}.Environment.Init
+        self.env = env
+{% for property in class.containedType.Environment.variables where property.name|!hasPrefix:"includes" %}
+        self.{{ property.name }} = env.{{ property.name }}
 {% endfor %}
+// sourcery:end
+
+// sourcery:inline:{{ class.name }}.Environment.Protocol
+protocol {{ class.name }}EnvironmentProtocol{% for include in class.containedType.Environment.variables where include.name|hasPrefix:"includes" %}{% if forloop.first %}: {% endif %}{{ include.typeName }}{% if not forloop.last %}, {% endif %}{% endfor %} {
+{% for property in class.containedType.Environment.variables where property.name|!hasPrefix:"includes" %}
+    var {{ property.name }}: {{ property.typeName }} { get }
 {% endfor %}
 }
 // sourcery:end
 
-protocol {{ enum.name|replace:"SceneModel","PresenterProtocol" }}: AnyObject {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"Response" %}
-    func present{{ useCase.localName }}Response(_ response: {{ type.name }})
-{% endfor %}
-{% endfor %}
-}
-
-// sourcery:file:Snippets/Scenes/{{ enum.name|replace:"SceneModel","" }}/{{ enum.name|replace:"SceneModel","Presenter" }}.swift
-class {{ enum.name|replace:"SceneModel","Presenter" }} {
-
-    private let interface: {{ enum.name|replace:"SceneModel","InterfaceProtocol" }}
-
-    init(interface: {{ enum.name|replace:"SceneModel","InterfaceProtocol" }}) {
-        self.interface = interface
-    }
-}
-
-
-extension {{ enum.name|replace:"SceneModel","Presenter" }}: {{ enum.name|replace:"SceneModel","PresenterProtocol" }} {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"Response" %}
-
-    func present{{ useCase.localName }}Response(_ response: {{ type.name }}) {
-    }
-{% endfor %}
-{% endfor %}
-}
-// sourcery:end
-
-protocol {{ enum.name|replace:"SceneModel","InterfaceProtocol" }}: AnyObject {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"ViewModel" %}
-    func display{{ useCase.localName }}ViewModel(_ viewModel: {{ type.name }})
-{% endfor %}
-{% endfor %}
-}
-
-// sourcery:file:Snippets/Scenes/{{ enum.name|replace:"SceneModel","" }}/{{ enum.name|replace:"SceneModel","ViewController" }}.swift
-class {{ enum.name|replace:"SceneModel","ViewController" }}: UIViewController {
-
-    private weak var interactor: {{ enum.name|replace:"SceneModel","InteractorProtocol" }}
-
-    init(interactor: {{ enum.name|replace:"SceneModel","InteractorProtocol" }}) {
-        self.interactor = interactor
-    }
-}
-
-
-extension {{ enum.name|replace:"SceneModel","InterfaceProtocol" }} {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"ViewModel" %}
-
-    func display{{ useCase.localName }}ViewModel(_ viewModel: {{ type.name }}) {
-    }
-{% endfor %}
+// sourcery:inline:{{ class.name }}.Environment.ProtocolImplementation
+struct {{ class.name }}Environment: {{ class.name }}EnvironmentProtocol {
+{% for property in class.containedType.Environment.variables where property.name|!hasPrefix:"includes" %}
+    let {{ property.name }}: {{ property.typeName }}
 {% endfor %}
 }
 // sourcery:end
 {% endfor %}
+
+// sourcery:inline:Global.Environment
+    AnyEnvironment,
+{% for class in types.classes where class|annotated:"build_environment" %}
+    {{ class.name }}EnvironmentProtocol{% if not forloop.last %},{% else %}{{ " {" }}{% endif %}
+{% endfor %}
+// sourcery:end

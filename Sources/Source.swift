@@ -1,76 +1,81 @@
+import Foundation
+
+// GLOBALE ENVIRONMENT
+
+struct GlobalEnvironment:
+    // sourcery:inline:Global.Environment
+    AnyEnvironment,
+    SettingsServiceEnvironmentProtocol,
+    TrackingServiceEnvironmentProtocol {
+    // sourcery:end
+    var database: DatabaseProtocol = Database()
+    var locationManager: LocationManagerProtocol = LocationManager()
+}
 
 
-enum EditProfileSceneModel: SceneModel {
 
-    enum UserData {
-        struct Request { }
-        struct Response {
-            let user: User
-        }
-        struct ViewModel {
-            let image: UIImage
-            let userName: String
-            let fullName: String
-        }
+// sourcery:build_environment
+class TrackingService {
+
+    private struct Environment {
+        let includesSettingsService: SettingsServiceEnvironmentProtocol
+        let locationManager: LocationManagerProtocol
     }
 
-    enum UserImageChange {
-        struct Request {
-            let newImage: UIImage
-        }
-        struct Response {
-            let uploadProgress: Double
-        }
-        struct ViewModel {
-            let message: String?
-        }
-    }
+    // sourcery:inline:TrackingService.Environment.Properties
+    typealias EnvironmentProtocol = TrackingServiceEnvironmentProtocol
 
-    enum UserNameChange {
-        struct Request {
-            let newUserName: String
-        }
-        struct Response {
-            let containsInvalidCharacters: Bool
-            let isTooShort: Bool
-            let isAlreadyTaken: Bool
-        }
-        struct ViewModel {
-            let message: String?
-        }
-    }
+    private let env: EnvironmentProtocol
+    private let locationManager: LocationManagerProtocol
+    // sourcery:end
 
-    enum UserFullNameChange {
-        struct Request {
-            let newFullName: String
-        }
-        struct Response {
-            let containsInvalidCharacters: Bool
-            let isTooShort: Bool
-            let isAlreadyTaken: Bool
-        }
-        struct ViewModel {
-            let message: String?
-        }
-    }
+    init(env: EnvironmentProtocol, withLimit limit: Int) {
+        // sourcery:inline:TrackingService.Environment.Init
+        self.env = env
+        self.locationManager = env.locationManager
+        // sourcery:end
 
-    enum Cancellation {
-        struct Request { }
-        struct Response {
-            let unsavedChanges: Bool
-        }
-        struct ViewModel {
-            let message: String?
-        }
-    }
-
-    enum Submit {
-        struct Request { }
-        struct Response {
-            let error: SomeError
-        }
-        struct ViewModel {
-            let message: String?
-        }
+        let settingService = SettingsService(env: env)
+        settingService.save()
     }
 }
+
+// sourcery:inline:TrackingService.Environment.Protocol
+protocol TrackingServiceEnvironmentProtocol: SettingsServiceEnvironmentProtocol {
+    var locationManager: LocationManagerProtocol { get }
+}
+// sourcery:end
+
+
+// sourcery:build_environment
+class SettingsService {
+
+    private struct Environment {
+        let database: DatabaseProtocol
+    }
+
+    // sourcery:inline:SettingsService.Environment.Properties
+    typealias EnvironmentProtocol = SettingsServiceEnvironmentProtocol
+
+    private let env: EnvironmentProtocol
+    private let database: DatabaseProtocol
+    // sourcery:end
+
+    init(env: SettingsServiceEnvironmentProtocol) {
+        // sourcery:inline:SettingsService.Environment.Init
+        self.env = env
+        self.database = env.database
+        // sourcery:end
+    }
+
+    func save() {
+        dump(database.path)
+    }
+}
+
+
+// sourcery:inline:SettingsService.Environment.Protocol
+protocol SettingsServiceEnvironmentProtocol {
+    var database: DatabaseProtocol { get }
+}
+// sourcery:end
