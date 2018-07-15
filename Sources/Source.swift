@@ -4,8 +4,6 @@ import Foundation
 
 struct GlobalEnvironment:
     // sourcery:inline:Global.Environment
-    SettingsServiceEnvironmentProtocol,
-    TrackingServiceEnvironmentProtocol {
     // sourcery:end
     var database: DatabaseProtocol = Database()
     var locationManager: LocationManagerProtocol = LocationManager()
@@ -21,24 +19,15 @@ class TrackingService {
     }
 
     // sourcery:inline:TrackingService.Environment.Properties
-    typealias EnvironmentProtocol = TrackingServiceEnvironmentProtocol
-
-    private let env: EnvironmentProtocol
-    private let locationManager: LocationManagerProtocol
     // sourcery:end
 
     init(env: EnvironmentProtocol, withLimit limit: Int) {
         // sourcery:inline:TrackingService.Environment.Init
-        self.env = env
-        self.locationManager = env.locationManager
         // sourcery:end
     }
 }
 
 // sourcery:inline:TrackingService.Environment.Protocol
-protocol TrackingServiceEnvironmentProtocol {
-    var locationManager: LocationManagerProtocol { get }
-}
 // sourcery:end
 
 
@@ -50,16 +39,10 @@ class SettingsService {
     }
 
     // sourcery:inline:SettingsService.Environment.Properties
-    typealias EnvironmentProtocol = SettingsServiceEnvironmentProtocol
-
-    private let env: EnvironmentProtocol
-    private let database: DatabaseProtocol
     // sourcery:end
 
     init(env: SettingsServiceEnvironmentProtocol) {
         // sourcery:inline:SettingsService.Environment.Init
-        self.env = env
-        self.database = env.database
         // sourcery:end
     }
 
@@ -70,7 +53,4 @@ class SettingsService {
 
 
 // sourcery:inline:SettingsService.Environment.Protocol
-protocol SettingsServiceEnvironmentProtocol {
-    var database: DatabaseProtocol { get }
-}
 // sourcery:end
