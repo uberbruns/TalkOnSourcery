@@ -1,3 +1,5 @@
+import Foundation
+
 {% for enum in types.based.SceneModel|enum %}
 protocol {{ enum.name|replace:"SceneModel","InteractorProtocol" }}: AnyObject {
 {% for useCase in enum.containedTypes|enum %}
