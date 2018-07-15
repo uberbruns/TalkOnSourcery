@@ -6,22 +6,4 @@ protocol {{ enum.name|replace:"SceneModel","InteractorProtocol" }}: AnyObject {
 {% endfor %}
 {% endfor %}
 }
-
-protocol {{ enum.name|replace:"SceneModel","PresenterProtocol" }}: AnyObject {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"Response" %}
-    func present{{ useCase.localName }}Response(_ response: {{ type.name }})
-{% endfor %}
-{% endfor %}
-}
-
-
-protocol {{ enum.name|replace:"SceneModel","InterfaceProtocol" }}: AnyObject {
-{% for useCase in enum.containedTypes|enum %}
-{% for type in useCase.containedTypes where type.localName|hasSuffix:"ViewModel" %}
-    func display{{ useCase.localName }}ViewModel(_ viewModel: {{ type.name }})
-{% endfor %}
-{% endfor %}
-}
-
 {% endfor %}
