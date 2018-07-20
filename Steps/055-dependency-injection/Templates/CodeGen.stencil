@@ -1,0 +1,11 @@
+import Foundation
+
+{% for class in types.classes where class|annotated:"build_environment" %}
+// sourcery:inline:{{ class.name }}.Environment.Protocol
+protocol {{ class.name }}EnvironmentProtocol {
+{% for property in class.containedType.Environment.variables %}
+    var {{ property.name }}: {{ property.typeName }} { get }
+{% endfor %}
+}
+// sourcery:end
+{% endfor %}

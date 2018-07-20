@@ -1,0 +1,16 @@
+{% for protocol in types.protocols where protocol|annotated:"mock" %}
+class {{ protocol.name|replace:"Protocol","Mock" }}: {{ protocol.name }} {
+{% for method in protocol.methods %}
+
+    var invoked{{ method.shortName|upperFirstLetter }} = false
+    var invoked{{ method.shortName|upperFirstLetter }}Count = 0
+    var invoked{{ method.shortName|upperFirstLetter }}Parameter: {{ method.parameters.first.typeName }}?
+
+    func {{ method.name }} {
+        invoked{{ method.shortName|upperFirstLetter }} = true
+        invoked{{ method.shortName|upperFirstLetter }}Count += 1
+        invoked{{ method.shortName|upperFirstLetter }}Parameter = {{ method.parameters.first.name }}
+    }
+{% endfor %}
+}
+{% endfor %}

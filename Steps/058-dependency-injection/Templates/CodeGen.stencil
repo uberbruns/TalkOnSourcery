@@ -1,0 +1,24 @@
+import Foundation
+
+{% for class in types.classes where class|annotated:"build_environment" %}
+// sourcery:inline:{{ class.name }}.Environment.Properties
+    typealias EnvironmentProtocol = {{ class.name }}EnvironmentProtocol
+    private let environment: EnvironmentProtocol
+{% for property in class.containedType.Environment.variables %}
+    private var {{ property.name }}: {{ property.typeName }} { return environment.{{ property.name }} }
+{% endfor %}
+// sourcery:end
+
+// sourcery:inline:{{ class.name }}.Environment.Protocol
+protocol {{ class.name }}EnvironmentProtocol {
+{% for property in class.containedType.Environment.variables %}
+    var {{ property.name }}: {{ property.typeName }} { get }
+{% endfor %}
+}
+// sourcery:end
+
+// sourcery:inline:Global.Environment
+    {% for class in types.classes where class|annotated:"build_environment" %}{% if forloop.first %}: {% else %}, {% endif %}{{ class.name }}EnvironmentProtocol
+    {% endfor %}
+// sourcery:end
+{% endfor %}

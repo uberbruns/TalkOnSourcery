@@ -1,0 +1,7 @@
+{% for protocol in types.protocols where protocol|annotated:"mock" %}
+class {{ protocol.name|replace:"Protocol","Mock" }}: {{ protocol.name }} {
+{% for method in protocol.methods %}
+    func {{ method.name }} { }
+{% endfor %}
+}
+{% endfor %}
