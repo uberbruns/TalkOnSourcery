@@ -1,0 +1,71 @@
+import Foundation
+
+{% for enum in types.enums where enum|annotated:"case_properties" %}
+{{ enum.accessLevel }} extension {{ enum.name }} {
+{% for case in enum.cases %}
+{% if case.hasAssociatedValue and case.associatedValues.count > 1 %}
+
+    {{ enum.accessLevel }} struct {{ case.name|upperFirstLetter }} {
+{% for value in case.associatedValues %}
+        {{ enum.accessLevel }} var {{ value.localName }}: {{ value.typeName }}
+{% endfor %}
+    }
+{% endif %}
+{% endfor %}
+{% for case in enum.cases %}
+
+    {{ enum.accessLevel }} var is{{ case.name|upperFirstLetter }}: Bool {
+        if case .{{ case.name }} = self {
+            return true
+        } else {
+            return false
+        }
+    }
+{% if case.hasAssociatedValue %}
+{% if case.associatedValues.count > 1 %}
+
+    {{ enum.accessLevel }} var {{ case.name }}: {{ case.name|upperFirstLetter }}? {
+        get {
+            switch self {
+            case .{{ case.name }}({% for value in case.associatedValues %}let {{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %}):
+                return {{ case.name|upperFirstLetter }}({% for value in case.associatedValues %}{{ value.localName }}: {{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %})
+            default:
+                return nil
+            }
+        }
+        set {
+            switch (self, newValue) {
+            case (.{{ case.name }}, let newValue?):
+                self = .{{ case.name }}({% for value in case.associatedValues %}{{ value.localName }}: newValue.{{ value.localName }}{% if not forloop.last %}, {% endif %}{% endfor %})
+            default:
+                break
+            }
+        }
+    }
+{% else %}
+
+    {{ enum.accessLevel }} var {{ case.name }}: {{ case.associatedValues.first.typeName }}? {
+        get {
+            switch self {
+            case .{{ case.name }}(let value):
+                return value
+            default:
+                return nil
+            }
+        }
+        set {
+            switch (self, newValue) {
+            case (.{{ case.name }}, let newValue?):
+                self = .{{ case.name }}(newValue)
+            default:
+                break
+            }
+        }
+    }
+{% endif %}
+{% endif %}
+{% endfor %}
+}
+
+
+{% endfor %}
